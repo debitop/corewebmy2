@@ -4,6 +4,7 @@ import com.example.corewebmy2.exceptions.UserAlreadyExistException;
 import com.example.corewebmy2.model.User;
 
 import java.util.Map;
+import java.util.Optional;
 
 public interface UserRepository {
 

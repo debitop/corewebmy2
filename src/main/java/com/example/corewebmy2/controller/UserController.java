@@ -6,10 +6,7 @@ import com.example.corewebmy2.repository.UserRepository;
 import com.example.corewebmy2.storage.UserStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.awt.*;
@@ -20,6 +17,7 @@ import static com.example.corewebmy2.dto.UserDto.UserDtoInterface.toUserDto;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
+@RequestMapping(value = "/")
 public class UserController {
     @Autowired
     UserRepository userRepository;
@@ -32,12 +30,12 @@ public class UserController {
     @GetMapping(value = "/get", produces = APPLICATION_JSON_VALUE)
     Map<Long, User> getUsers() {
         return userRepository.get();
-
-    }@GetMapping(value = "/get/{id}", produces = APPLICATION_JSON_VALUE)
-    User getUsersById(Long id) {
-        return userRepository.getById(id);
     }
 
+    @GetMapping(value = "/get/{id}", produces = APPLICATION_JSON_VALUE)
+    User getUsersById(@PathVariable Long id) {
+        return userRepository.getById(id);
+    }
 
 
 }

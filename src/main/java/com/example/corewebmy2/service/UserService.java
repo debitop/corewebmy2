@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserRepository {
@@ -32,7 +33,7 @@ public class UserService implements UserRepository {
     }
 
     @Override
-    User getById(Long id) {
-        return UserStorage.findUserById(id);
+    public User getById(Long id) {
+        return UserStorage.findUserById(id).get();
     }
 }
