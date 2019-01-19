@@ -11,8 +11,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class UserStorage {
-    static Map<Long, User> users = new ConcurrentHashMap<>();
-    AtomicInteger sequence = new AtomicInteger(0);
+    public static Map<Long, User> users = new ConcurrentHashMap<>();
+    public static AtomicInteger sequence = new AtomicInteger(0);
 
     public User save(User user) {
         Optional<User> ourUser = findUser(user.getUserName());
