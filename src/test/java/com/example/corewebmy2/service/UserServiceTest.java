@@ -5,7 +5,9 @@ import com.example.corewebmy2.model.User;
 import com.example.corewebmy2.storage.UserStorage;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 
@@ -15,19 +17,21 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.Assert.*;
 
 @SpringBootTest
+@RunWith(SpringRunner.class)
 public class UserServiceTest {
     private static final String TEST_USER_NAME = "testUserName";
     private static final String TEST_FIRST_NAME = "testFirstName";
     private static final String TEST_LAST_NAME = "testLastName";
     private static final String TEST_PASSWORD = "testPassword";
-    private static final Long TEST_ID = 2L;
+    private static final Long TEST_ID = 1L;
 
     @Resource
     UserService userService;
 
     @Test
     public void testCorrectPersistUser() {
-        User savedUser = userService.save(mockedUser());
+        User user = mockedUser();
+        User savedUser = userService.save(user);
         assertEquals("persist error", 1L, savedUser.getId().longValue());
         assertNotNull("password error", savedUser.getHashedPassword());
     }
@@ -49,12 +53,14 @@ public class UserServiceTest {
 
     @Test
     public void testGetUserByIdSucsess() {
-        userService.save(mockedUser());
-        User savedUser = userService.getById(mockedUser().getId());
+        User mokedUser =mockedUser();
+        User savedUser = userService.save(mokedUser);
+        assertNotNull(savedUser);
+        savedUser = userService.getById(mokedUser.getId());
         assertEquals("", TEST_USER_NAME, savedUser.getUserName());
         assertEquals("", TEST_FIRST_NAME, savedUser.getFirstName());
         assertEquals("", TEST_LAST_NAME, savedUser.getLastName());
-        assertEquals("", TEST_PASSWORD, savedUser.getHashedPassword());
+        assertEquals("", TEST_PASSWORD, savedUser.getPassword());
         assertEquals("", TEST_ID.longValue(), savedUser.getId().longValue());
 
     }
@@ -67,8 +73,13 @@ public class UserServiceTest {
 
 
     User mockedUser() {
-        return User.of().firstName(TEST_FIRST_NAME).id(TEST_ID).lastName(TEST_LAST_NAME)
-                .userName(TEST_USER_NAME).password(TEST_PASSWORD).create();
+        return User.of()
+                .firstName(TEST_FIRST_NAME)
+                .id(TEST_ID)
+                .lastName(TEST_LAST_NAME)
+                .userName(TEST_USER_NAME)
+                .password(TEST_PASSWORD)
+                .create();
     }
 
 }
